@@ -8,30 +8,46 @@ import { useState } from "react";
 import { agendarConsulta } from "../servicos/ConsultaServico";
 
 interface Especialista {
-  nome: string,
-  imagem: string,
-  especialidade: string,
-  id: string,
+  nome: string;
+  imagem: string;
+  especialidade: string;
+  id: string;
 }
 
 export default function Explorar({ navigation }) {
-  const [estado, setEstado] = useState('');
-  const [especialidade, setEspecialidade] = useState('');
+  const [estado, setEstado] = useState("");
+  const [especialidade, setEspecialidade] = useState("");
   const [resultadoBusca, setResultadoBuscar] = useState([]);
 
   async function buscar() {
-    if (!estado || !especialidade) return null
-    const resultado = await buscarEspecialistaPorEstado(estado, especialidade)
+    if (!estado || !especialidade) return null;
+    const resultado = await buscarEspecialistaPorEstado(estado, especialidade);
     if (resultado) {
-      setResultadoBuscar(resultado)
-      console.log(resultado)
+      setResultadoBuscar(resultado);
+      console.log(resultado);
     }
+  }
+
+  function voltar() {
+    navigation.replace("Login");
   }
 
   return (
     <ScrollView flex={1} bgColor="white">
-      <VStack flex={1} alignItems="flex-start" justifyContent="flex-start" p={5}>
-        <Box w="100%" borderRadius="lg" p={3} mt={5} shadow="1" borderRightRadius="md">
+      <VStack
+        flex={1}
+        alignItems="flex-start"
+        justifyContent="flex-start"
+        p={5}
+      >
+        <Box
+          w="100%"
+          borderRadius="lg"
+          p={3}
+          mt={5}
+          shadow="1"
+          borderRightRadius="md"
+        >
           <EntradaTexto
             placeholder="Digite a especialidade"
             value={especialidade}
@@ -45,20 +61,33 @@ export default function Explorar({ navigation }) {
           <Botao mt={3} mb={3} onPress={buscar}>
             Buscar
           </Botao>
+          <Botao onPress={voltar}>Voltar</Botao>
         </Box>
 
-        <Titulo color="blue.500" alignSelf="center">Resultado da Busca</Titulo>
+        <Titulo color="blue.500" alignSelf="center">
+          Resultado da Busca
+        </Titulo>
         {resultadoBusca?.map((especialista: Especialista, index) => (
-          <VStack flex={1} w="100%" alignItems="flex-start" bgColor="white" key={index}>
+          <VStack
+            flex={1}
+            w="100%"
+            alignItems="flex-start"
+            bgColor="white"
+            key={index}
+          >
             <CardConsulta
               especialidade={especialista.especialidade}
               foto={especialista.imagem}
               nome={especialista.nome}
-              onPress={() => navigation.navigate('Agendamento', { especialistaId: especialista.id })}
+              onPress={() =>
+                navigation.navigate("Agendamento", {
+                  especialistaId: especialista.id,
+                })
+              }
             />
           </VStack>
         ))}
       </VStack>
     </ScrollView>
-  )
+  );
 }

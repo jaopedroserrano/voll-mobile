@@ -42,23 +42,14 @@ export default function Consultas({
         pacienteId
       );
       const agora = new Date();
-
-      
     const proximas = todasConsultas.filter((consulta) => new Date(consulta.data)> agora)
-
-    
     const passadas = todasConsultas.filter((consulta) => new Date(consulta.data) <= agora)
-      
     setConsultasProximas(proximas) 
     setConsultasPassadas(passadas)
   }
   pegarConsultas()
   }, [isFocused,recarregar] );
 
-  
-
-
-    
   async function cancelar(consultaId: string){
     const resultado = await cancelarConsulta(consultaId)
     if(resultado){
@@ -75,15 +66,12 @@ export default function Consultas({
     }
   }
   
-
-
   return (
     <ScrollView p="5">
       <Titulo color="blue.500">Minhas consultas</Titulo>
-      <Botao mt={5} mb={5}>
+      <Botao mt={5} mb={5} onPress={() => navigation.navigate('Explorar')}>
         Agendar nova consulta
       </Botao>
-
       <Titulo color="blue.500" fontSize="lg" alignSelf="flex-start" mb={2}>
         Próximas Consultas
       </Titulo>
